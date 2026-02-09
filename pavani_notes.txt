@@ -1,0 +1,43 @@
+DATE		    : 09-02-2026
+TOPICS COVERED	: Introduction to Web Scraping
+SOURCES		    : GFG
+
+Introduction to Web Scraping - 
+Web scraping is the automated process of extracting data from websites and converting unstructured HTML content into structured formats such as CSV, Excel, JSON, or databases. 
+Manual copying takes huge time and hence web scraping is used to collect large volumes of data efficiently .
+
+1. Web Scraping Flow
+-Send an HTTP request to a target webpage
+-Receive the webpage content (HTML / rendered page)
+-Parse the page structure
+-Extract required data
+-Clean and organize the extracted data
+-Store data for analysis or visualization
+
+2. Techniques(depends on how the website loads its data)
+-HTML Parsing – Used for static websites
+-DOM Parsing – Used when content is loaded dynamically
+-API Access
+-Headless Browsers (Selenium / Playwright) – Used for Javascript based pages
+
+3. Tools
+-Requests – Fetches webpage data
+-Beautifulsoup –Extracts data from HTML
+-Scrapy –Large scale scraping framework
+-Selenium / Playwright – Handles dynamic content
+
+4. Web Scraping AND Web Crawling
+Web Scraping –Extracts specific data from selected pages
+Web Crawling –Visits and indexes all pages of a website
+
+5. Legal and Ethical Awareness
+Web scraping is not illegal by default but must respect:
+-Website Terms of Service
+-robots.txt rules
+-Copyright and data privacy laws
+
+6. Challenges
+Dynamic content loading
+Website structure changes
+Anti-scraping mechanisms
+Data quality and maintenance

@@ -1,0 +1,80 @@
+WEB SCRAPING
+date: 09/02/26	
+Topics done: 
+Intro to web scraping; defs, applications, tools, techniques, components-crawlers and scrapers, working of the crawlers and scrapers, best practices, challenges, future. 
+=====================================================================
+	
+Introduction to web scraping 
+
+Manual copying is slow, manual and time consuming.
+
+
+What is web scraping: An automated technique using software to extract large amounts of data from websites quickly. data from html to csv or json like structured formats.
+
+Real world applications: 
+finance - news data and real time stock prices 
+Online Shopping - real time price setting based on competitor prices
+cheapest flight prices in real time 
+Machine learning models can be trained on the huge amounts of data scraped from web
+search engine optimization: keyword rank tracking 
+social media trend analysis
+
+Techniques and tools
+Manual : copy pasting and it's inefficient and static
+key automated techniques
+best case scenario : website gives an api 
+tricky sites: we pretend to be humans and get data
+
+tools:
+beautifulSoup package in python for simple html parsing
+scrapy a framework in python for advanced and large scale projects
+selenium and playwright for dynamic scraping and for interactive sites
+playwright is a faster alternative to selenium
+
+components of web scraping 
+crawler: moves across web pages; follows links; finds target pages
+scraper: extracts required data; based on tags classes etc
+
+scraping vs crawling
+scraping == extracting data; data focused
+crawling == visits and indexes pages; discovery focused
+
+Working of web scrapers:
+url input 
+http request is sent to website
+html content is downloaded
+parsed
+only the required data is extracted
+data is cleaned and stored
+
+Python for web scraping : easy to learn and readable syntax
+more libraries 
+automation and data processing
+
+
+challenges
+website layout changes break scrapers
+are you a robot or captcha blockers
+legal and ethical issues
+cleaning data is time consuming
+
+Legal and ethical aspects
+web scraping is not illegal by default
+depends on website terms and usage
+may violate copyright or terms of service
+scraping personal data is unethical
+overloading servers is unethical
+
+
+Best Practices
+rate limiting
+no personal data scraping
+prefer official apis
+follow robots.txt rules
+be transparent and ethical
+
+
+future of ws:
+more use of ai and automation
+better handling of dynamic websites
+more apis reducing need for scraping

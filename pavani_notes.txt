@@ -398,4 +398,5 @@ SESSIONS
 proxies
 - used when ip rotation is required 
 
-simple , try req 1st , if blocked -> use curl_cffi , if still blocked go to selenium
+simple , try req 1st , if blocked -> use curl_cffi , 
+if still blocked go to selenium

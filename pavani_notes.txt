@@ -284,3 +284,118 @@ it is about:
 looking like browser
 maintaining session
 not triggering blocks
+
+
+==================================================================================
+DATE		    : 12-02-2026
+
+TOPICS COVERED	: 
+user-agent strings,
+browser dev tool , 
+requests,
+browser impersonating http client 
+
+SOURCES		    : sources from roadmap , llm
+==================================================================================
+1. USER AGENTS
+===============
+-contained in the HTTP headers
+-intended to identify devices requesting for content
+-it tells server what the visiting device is. 
+
+example:
+Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+AppleWebKit/537.36 (KHTML, like Gecko)
+Chrome/120.0.0.0 Safari/537.36
+
+It tells the server:
+Browser type
+OS
+Device type
+
+**if we send a request without user agent many websites will block us.**
+
+types of user agents:
+desktop Chrome
+firefox
+mobile Safari
+android Chrome
+
+===============================
+2. Browser devtools
+================================
+done the inspect for geeksforgeeks for 
+-network tab - refresh page - click any buttons - scroll page - apply filters - can see the js , css, images , xhr, fetch 
+click xhr - shows api calls, json responses
+
+network panel by default hides some panel , can right click on network tab - can select which column to add to view
+
+slower network connection stimulating - throttling- select - fast 3g/slow3g/offline 
+-to clearly see order of requests
+-see lazy laoding apis and all
+
+
+-RESOURCE DETAILS
+click on any url - headers , payload, preview , respnse -saw this in the inspect
+
+================================
+3. REQUESTS- HTTP for humans
+================================
+most imp scraping library
+
+--install : pip install requests
+
+import requests
+r = requests.get('https://api.github.com/user', auth=('user', 'pass'))
+    --sends a http get req to url with basic auth
+
+r.status_code
+    --gives status codes like 200 
+
+r.headers['content-type']
+    --metadata about the response
+    If content-type is:
+application/json → use .json()
+text/html → use .text
+application/xml → parse XML
+
+r.encoding
+tells how chars are stored
+
+r.text
+
+returns raw response as strings
+
+
+r.json()
+converts json string - py string
+
+===========================
+4. curl_cffi
+===========================
+
+used when requests gives 403 / sites block py clients/ sit uses cloudflare
+
+if requests work - no need to use this
+install- pip install curl_cffi
+code for scraping - 
+
+from curl_cffi import requests
+headers = {
+    "User-Agent": "Mozilla/5.0"
+}
+r = requests.get(
+    "https://example.com/api/data",
+    impersonate="chrome"   
+)
+print(r.json())
+
+impersonate="chrome" this line tells to behave exactly like chrome 
+
+SESSIONS
+-maintains cookies, login state 
+
+proxies
+- used when ip rotation is required 
+
+simple , try req 1st , if blocked -> use curl_cffi , if still blocked go to selenium

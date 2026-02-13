@@ -284,3 +284,251 @@ it is about:
 looking like browser
 maintaining session
 not triggering blocks
+
+
+==================================================================================
+DATE		    : 12-02-2026
+
+TOPICS COVERED	: 
+user-agent strings,
+browser dev tool , 
+requests,
+browser impersonating http client 
+
+SOURCES		    : sources from roadmap , llm
+==================================================================================
+1. USER AGENTS
+===============
+-contained in the HTTP headers
+-intended to identify devices requesting for content
+-it tells server what the visiting device is. 
+
+example:
+Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+AppleWebKit/537.36 (KHTML, like Gecko)
+Chrome/120.0.0.0 Safari/537.36
+
+It tells the server:
+Browser type
+OS
+Device type
+
+**if we send a request without user agent many websites will block us.**
+
+types of user agents:
+desktop Chrome
+firefox
+mobile Safari
+android Chrome
+
+===============================
+2. Browser devtools
+================================
+done the inspect for geeksforgeeks for 
+-network tab - refresh page - click any buttons - scroll page - apply filters - can see the js , css, images , xhr, fetch 
+click xhr - shows api calls, json responses
+
+network panel by default hides some panel , can right click on network tab - can select which column to add to view
+
+slower network connection stimulating - throttling- select - fast 3g/slow3g/offline 
+-to clearly see order of requests
+-see lazy laoding apis and all
+
+
+-RESOURCE DETAILS
+click on any url - headers , payload, preview , respnse -saw this in the inspect
+
+================================
+3. REQUESTS- HTTP for humans
+================================
+most imp scraping library
+
+--install : pip install requests
+
+import requests
+r = requests.get('https://api.github.com/user', auth=('user', 'pass'))
+    --sends a http get req to url with basic auth
+
+r.status_code
+    --gives status codes like 200 
+
+r.headers['content-type']
+    --metadata about the response
+    If content-type is:
+application/json → use .json()
+text/html → use .text
+application/xml → parse XML
+
+r.encoding
+tells how chars are stored
+
+r.text
+
+returns raw response as strings
+
+
+r.json()
+converts json string - py string
+
+===========================
+4. curl_cffi
+===========================
+
+used when requests gives 403 / sites block py clients/ sit uses cloudflare
+
+if requests work - no need to use this
+install- pip install curl_cffi
+code for scraping - 
+
+from curl_cffi import requests
+headers = {
+    "User-Agent": "Mozilla/5.0"
+}
+r = requests.get(
+    "https://example.com/api/data",
+    impersonate="chrome"   
+)
+print(r.json())
+
+impersonate="chrome" this line tells to behave exactly like chrome 
+
+SESSIONS
+-maintains cookies, login state 
+
+proxies
+- used when ip rotation is required 
+
+simple , try req 1st , if blocked -> use curl_cffi , 
+if still blocked go to selenium
+
+==================================================================================
+DATE		    : 13-02-2026
+TOPICS COVERED	: Selenium , Hands on ApI's
+SOURCES		    : github repo , llm , yt
+==================================================================================
+SELNEIUM
+Selenium is a browser automation tool that controls a real browser programmatically.
+ The Python script will open the browser, 
+ visits web pages, 
+ enter text, 
+ click buttons, 
+ and copy text. 
+ This can be combined with other features in Python to save data in simple CSV or complex databases.
+
+why selenium : 
+not all websites expose API clearly
+some APIs are heavily protected
+some sites require user interaction
+some sites use anti-bot protection
+
+when to use : 
+=============================
+json api available - requests
+html static page - Beautifulsoup
+js heavy dynamic site - selenium
+anti-bot protection - selenium or curl_cffi
+
+
+installation - pip install selenium
+
+
+install chromeDriver - pip install webdriver-manager
+==============
+USE CASE:
+==============
+suppose web html is like : 
+<h2 class="title">Phone</h2>
+then , 
+from selenium.webdriver.common.by import By
+
+elements = driver.find_elements(By.CLASS_NAME, "title")
+
+for e in elements:
+    print(e.text)
+
+//still learning about that code part . 
+
+===========================================================
+HANDS ON websites
+===========================================================
+
+1. working on https://quotes.toscrape.com/
+===========================================================
+- static html page { no api calls even after refresh, in page source we can see page content in html }
+
+import requests
+from bs4 import BeautifulSoup
+
+url = "https://quotes.toscrape.com/"
+
+response = requests.get(url)
+
+soup = BeautifulSoup(response.text, "html.parser")
+
+quotes = soup.find_all("div", class_="quote")
+
+for quote in quotes:
+    text = quote.find("span", class_="text").text
+    author = quote.find("small", class_="author").text
+    
+    print(text)
+    print(author)
+
+output i got : 
+ python url1_html.py
+“The world as we have created it is a process of our thinking. It cannot be changed without changing our thinking.”
+Albert Einstein
+“It is our choices, Harry, that show what we truly are, far more than our abilities.”
+J.K. Rowling
+“There are only two ways to live your life. One is as though nothing is a miracle. The other is as though everything is a miracle.”
+Albert Einstein
+“The person, be it gentleman or lady, who has not pleasure in a good novel, must be intolerably stupid.”    
+Jane Austen
+“Imperfection is beauty, madness is genius and it's better to be absolutely ridiculous than absolutely boring.”
+Marilyn Monroe
+“Try not to become a man of success. Rather become a man of value.”
+Albert Einstein
+“It is better to be hated for what you are than to be loved for what you are not.”
+André Gide
+“I have not failed. I've just found 10,000 ways that won't work.”
+Thomas A. Edison
+“A woman is like a tea bag; you never know how strong it is until it's in hot water.”
+Eleanor Roosevelt
+“A day without sunshine is like, you know, night.”    
+Steve Martin
+
+
+=================================================
+2. working on https://uww.org/athletes-results
+=================================================
+import requests
+from bs4 import BeautifulSoup
+url = "https://uww.org/athletes-results"
+response = requests.get(url)
+soup = BeautifulSoup(response.text, "html.parser")
+print(soup.get_text())
+
+output : 
+
+ python url2_html.py
+UWW wrestlers rankings  UWW search       Home    UWW+    Events    News    Athletes & Results  Inside UWW    About UWW    Development    Governance    About Events    UWW ACADEMY    Athena    Contact Us     Get Your Pass     Log in  Profile      World Rankings    Historical Results    Head To Head   HomeAthletes & Results 
+Athletes and results
+Close
+{{getPlayerName(player)}}
+
+
+                                         {{getCountryName(player)}}
+
+
+  Filter by  Filter By    Clear Apply  FS 57 View all PosPlayerCountryPoints 1        Chong Song HAN C. HAN   PRK  58000 pts   2        Roman Guillermo BRAVO YOUNG R. BRAVO YOUNG   MEX  46600 pts   3        Gulomjon ABDULLAEV G. ABDULLAEV   UZB  38000 pts   4        Bekzat ALMAZ UULU B. ALMAZ UULU   KGZ  37000 pts   5        Arsen HARUTYUNYAN A. HARUTYUNYAN   ARM  31000 pts   FS 61 View all PosPlayerCountryPoints 1        Zavur UGUEV Z. UGUEV   UWW  58000 pts   2        Ahmad Masoud MOHAMMADNEZHADJAVAN A. MOHAMMADNEZH   IRI  51500 pts   3        Nuraddin NOVRUZOV N. NOVRUZOV   AZE  42700 pts   4        Assylzhan YESSENGELDI A. YESSENGELDI   KAZ  39200 pts   5        Dzmitry SHAMELA D. SHAMELA   UWW  37340 pts   FS 65 View all PosPlayerCountryPoints 1        Rahman Mousa AMOUZADKHALILI R. AMOUZADKHALI   IRI  58000 pts   2        Ibragim Sharaputtinovich IBRAGIMOV I. IBRAGIMOV   UWW  45075 pts   3        Real Marshall Ray WOODS R. WOODS   USA  41200 pts   4        Umidjon JALOLOV U. JALOLOV   UZB  39000 pts   5        Khamzat Timourovitch ARSAMERZOUEV K. ARSAMERZOUEV   FRA  38400 pts   FS 70 View all PosPlayerCountryPoints 1        Yoshinosuke AOYAGI Y. AOYAGI   JPN  76500 pts   2        Tulga TUMUR-OCHIR T. TUMUR-OCHIR   MGL  50200 pts   3        Arman ANDREASYAN A. ANDREASYAN   ARM  45400 pts   4        VASILE DIACON V. DIACON   MDA  44500 pts   5        Ernazar Kubatbekovich AKMATALIEV E. AKMATALIEV   KGZ  44000 pts   FS 74 View all PosPlayerCountryPoints 1        Tajmuraz Mairbekovic SALKAZANOV T. SALKAZANOV   SVK  66900 pts   2        Chermen VALIEV C. VALIEV   ALB  63000 pts   3        Kota TAKAHASHI K. TAKAHASHI   JPN  56000 pts   4        Murad KURAMAGOMEDOV M. KURAMAGOMEDO   HUN  46600 pts   5        Yones Aliakbar EMAMICHOGHAEI Y. EMAMICHOGHAE   IRI  43200 pts   FS 79 View all PosPlayerCountryPoints 1        Khidir Kurban A SAIPUDINOV K. SAIPUDINOV   BRN  56000 pts   2        Georgios KOUGIOUMTSIDIS G. KOUGIOUMTSID   GRE  55200 pts   3        Levi David HAINES L. HAINES   USA  44800 pts   4        Zelimkhan KHADJIEV Z. KHADJIEV   FRA  41050 pts   5        Suldkhuu OLONBAYAR S. OLONBAYAR   MGL  38500 pts   FS 86 View all PosPlayerCountryPoints 1        Zahid VALENCIA Z. VALENCIA   USA  63000 pts   2        Arsenii DZHIOEV A. DZHIOEV   AZE  55600 pts   3        Rakhim MAGAMADOV R. MAGAMADOV   FRA  42520 pts   4        Hayato ISHIGURO H. ISHIGURO   JPN  37000 pts   5        Mukul DAHIYA M. DAHIYA   IND  33000 pts   FS 92 View all PosPlayerCountryPoints 1        Trent Niemond HIDLAY T. HIDLAY   USA  61000 pts   2        Osman NURMAGOMEDOV O. NURMAGOMEDOV   AZE  59920 pts   3        Amirhossein Biglar FIROUZPOURBANDPEI A. FIROUZPOURBA   IRI  52000 pts   4        Miriani MAISURADZE M. MAISURADZE   GEO  49900 pts   5        Benjamin Konrad HONIS B. HONIS   ITA  37700 pts   FS 97 View all PosPlayerCountryPoints 1        Kyle SNYDER K. SNYDER   USA  61200 pts   2        Arash YOSHIDA A. YOSHIDA   JPN  55000 pts   3        Akhmed Magomed O TAZHUDINOV A. TAZHUDINOV   BRN  42000 pts   4        Amirali Hamid AZARPIRA A. AZARPIRA   IRI  37000 pts   5        Zbigniew Mateusz BARANOWSKI Z. BARANOWSKI   POL  34400 pts   FS 125 View all PosPlayerCountryPoints 1        Shamil Magomed A SHARIPOV S. SHARIPOV   BRN  56700 pts   2        Amir Hossein Abbas ZARE A. ZARE   IRI  56000 pts   3        Giorgi MESHVILDISHVILI G. MESHVILDISHV   AZE  55025 pts   4        Vlagyiszlav BAJCAJEV V. BAJCAJEV   HUN  42000 pts   5        Robert BARAN R. BARAN   POL  41200 pts 
+Close
+ GENERAL HomeEventsStoreUWW AcademyHistorical ResultsUWW+ FAQsPhotosABOUT UWW HistoryThe OrganizationStylesReports & ArticlesContact UsDEVELOPMENT About developmentCoachesAthletesRefereesTraining centersTechnical AssistanceGOVERNANCE About GovernanceCircular LettersRules & RegulationsFinanceLicenses & Engagement FeesIntegrityABOUT EVENTS Host an eventAdministrationATHENA AboutVisit AthenaMedia CentreLEGAL Privacy PolicyTerms of servicesCookies policies
+
+
+ United World Wrestling 2026 - All rights reserved    
+
+ FacebookInstagramTikTokXVK  Back  Close  100 Search results for
+                        Virat Kohli  Recent resultsAllAthletesVideosNewsEventsInstitutional Type here to search
+
+No data available
+Close

@@ -268,7 +268,7 @@ SOAP → xml heavy
 rare
 
 GraphQL → flexible
-single endpoint
+single endpoint(any api call you click , all will be same so in graphql all the api calls will be having same url unlike rest api where api calls urls will be different)
 
 gRPC → fast, binary
 microservices

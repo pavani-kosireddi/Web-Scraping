@@ -532,3 +532,43 @@ Close
 
 No data available
 Close
+
+==================================================================================
+DATE		    : 16-02-2026
+TOPICS COVERED	: Hands on ApI's
+SOURCES		    : -
+==================================================================================
+Task : 
+To extract the details from Uww website , fs 57 , 2024
+
+code : 
+
+import requests
+url = "https://uww.org/apiv4/getrankinglist/api/rankings/current/seniors/fs/57?page=1&season=2024"
+data = requests.get(url).json()["content"]["hydramember"]
+for p in data:
+    print(f'{p["rank"]} | {p["person"]["fullname"]["firstname"]} {p["person"]["fullname"]["lastname"]} | {p["person"]["noc"]} | {p["uwwPoints"]}')
+
+output: 
+
+ python task.py
+1 | Rei HIGUCHI | JPN | 51000
+2 | Aman AMAN | IND | 46400
+3 | Spencer Richard LEE | USA | 45000
+4 | Gulomjon ABDULLAEV | UZB | 32520
+5 | Darian Toi CRUZ | PUR | 31280
+6 | Diamantino IUNA FAFE | GBS | 26550
+7 | Arsen HARUTYUNYAN | ARM | 26200
+8 | Bekzat ALMAZ UULU | KGZ | 23000
+9 | Wanhao ZOU | CHN | 21700
+10 | Roberti DINGASHVILI | GEO | 17500
+11 | Muhammet KARAVUS | TUR | 16200
+12 | Zelimkhan ABAKAROV | ALB | 15000
+13 | Meirambek KARTBAY | KAZ | 14900
+14 | Kento YUMIYA | JPN | 13000
+15 | Gamal Abdelnaser Hanafy MOHAMED | EGY | 12600
+16 | Almaz SMANBEKOV | KGZ | 12600
+17 | Islam BAZARGANOV | AZE | 12300
+18 | Weiyu LI | CHN | 11025
+19 | Aliabbas RZAZADE | AZE | 11000
+20 | Udit UDIT | IND | 11000

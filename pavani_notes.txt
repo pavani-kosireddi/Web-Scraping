@@ -572,3 +572,187 @@ output:
 18 | Weiyu LI | CHN | 11025
 19 | Aliabbas RZAZADE | AZE | 11000
 20 | Udit UDIT | IND | 11000
+
+==================================================================================
+DATE		    : 17-02-2026
+TOPICS COVERED	: Practice on requests, Intro to Selenium
+SOURCES		    : Roadmap , LLM
+==================================================================================
+
+GraphQl:
+
+import requests
+url = "https://graphql-prod-4843.edge.aws.worldathletics.org/graphql"
+headers = {
+    "Content-Type": "application/json",
+    "x-api-key": "da2-kh7djqqqkjczfgysuw3b7hczoq"
+}
+payload = {
+    "operationName": "GetSingleCompetitorWinningStreak",
+    "query": """
+        query GetSingleCompetitorWinningStreak($id: Int, $winningStreaksDisciplineOption: String, $winningStreaksFinalOnly: Boolean) {
+            getSingleCompetitorWinningStreak(
+                id: $id,
+                winningStreaksDisciplineOption: $winningStreaksDisciplineOption,
+                winningStreaksFinalOnly: $winningStreaksFinalOnly
+            ) {
+                streaks {
+                    length
+                    results {
+                        date
+                        competition
+                        venue
+                        race
+                        result
+                        discipline
+                    }
+                }
+            }
+        }
+    """,
+    "variables": {
+        "id": 14549089,
+        "winningStreaksDisciplineOption": "all",
+        "winningStreaksFinalOnly": False
+    }
+}
+data = requests.post(url, headers=headers, json=payload).json()
+for streak in data["data"]["getSingleCompetitorWinningStreak"]["streaks"]:
+    print(f"\nWinning Streak Length: {streak['length']}")
+    for r in streak["results"]:
+        print(f"{r['date']} | {r['competition']} | {r['venue']} | {r['race']} | {r['result']}m | {r['discipline']}")
+
+output:
+
+Winning Streak Length: 3
+05 JUL 2025 | Neeraj Chopra Classic, Sree Kanteerava Outdoor Stadium, Bengaluru | Sree Kanteerava Outdoor Stadium, Bengaluru (IND) | F | 86.18m | Javelin Throw 
+24 JUN 2025 | 64th Ostrava Golden Spike, Mestský Stadion, Ostrava | Mestský Stadion, Ostrava (CZE) | F | 85.29m | Javelin Throw
+20 JUN 2025 | Meeting de Paris, Stade Charléty, Paris | Stade Charléty, Paris (FRA) | F | 88.16m | Javelin Throw
+
+Winning Streak Length: 3
+06 AUG 2024 | The XXXIII Olympic Games, Stade de France, Paris | Stade de France, Paris (FRA) | Q2 | 89.34m | Javelin Throw
+18 JUN 2024 | Paavo Nurmi Games, Paavo Nurmen Stadion, Turku | Paavo Nurmen Stadion, Turku (FIN) | F | 85.97m | Javelin Throw
+15 MAY 2024 | 27th National Federation Senior Athletics Competition, Kalinga Stadium, Bhubaneshwar | Kalinga Stadium, Bhubaneshwar (IND) | F | 82.27m | Javelin Throw
+
+Winning Streak Length: 6
+27 AUG 2023 | World Athletics Championships, Budapest 2023, Nemzeti Atlétikai Központ, Budapest | Nemzeti Atlétikai Központ, Budapest (HUN) | F | 88.17m | Javelin Throw
+25 AUG 2023 | World Athletics Championships, Budapest 2023, Nemzeti Atlétikai Központ, Budapest | Nemzeti Atlétikai Központ, Budapest (HUN) | Q1 | 88.77m | Javelin Throw
+30 JUN 2023 | Athletissima Lausanne, Stade Olympique de la Pontaise, Lausanne | Stade Olympique de la Pontaise, Lausanne (SUI) | F | 87.66m | Javelin Throw     
+05 MAY 2023 | Diamond League Meeting, Suhaim bin Hamad Stadium, Doha | Suhaim bin Hamad Stadium, Doha (QAT) | F | 88.67m | Javelin Throw
+08 SEP 2022 | Weltklasse Zürich, Letzigrund, Zürich | Letzigrund, Zürich (SUI) | F | 88.44m | Javelin Throw
+26 AUG 2022 | Athletissima Lausanne, Stade Olympique de la Pontaise, Lausanne | Stade Olympique de la Pontaise, Lausanne (SUI) | F | 89.08m | Javelin Throw     
+
+Winning Streak Length: 2
+07 AUG 2021 | The XXXII Olympic Games, National Stadium, Tokyo | National Stadium, Tokyo (JPN) | F | 87.58m | Javelin Throw
+04 AUG 2021 | The XXXII Olympic Games, National Stadium, Tokyo | National Stadium, Tokyo (JPN) | Q1 | 86.65m | Javelin Throw
+
+Winning Streak Length: 6
+22 JUN 2021 | Karlstad GP, Tingvalla IP, Karlstad | Tingvalla IP, Karlstad (SWE) | F | 80.96m | Javelin Throw
+10 JUN 2021 | Meeting Cidade de Lisboa, Estadio Universitario, Lisboa | Estadio Universitario, Lisboa (POR) | F | 83.18m | Javelin Throw
+17 MAR 2021 | Federation Cup, Patiala | Patiala (IND) | F | 87.80m | Javelin Throw
+05 MAR 2021 | Indian Grand Prix 3, Patiala | Patiala (IND) | F | 88.07m | Javelin Throw
+28 JAN 2020 | ACNW League Meeting 1, McArthur Stadium, Potchefstroom | McArthur Stadium, Potchefstroom (RSA) | F | 87.86m | Javelin Throw
+19 SEP 2018 | Jalahalli All-India Inter-Services Ch., Jalahalli | Jalahalli (IND) | F | 83.90m | Javelin Throw
+
+Winning Streak Length: 3
+27 AUG 2018 | Jakarta Asian Games, Jakarta | Jakarta (INA) | F | 88.06m | Javelin Throw
+28 JUL 2018 | Lapinlahti Motonet GP, Lapinlahti | Lapinlahti (FIN) | F | 85.69m | Javelin Throw
+17 JUL 2018 | Sotteville-lès-Rouen Meeting International, Sotteville-lès-Rouen | Sotteville-lès-Rouen (FRA) | F | 85.17m | Javelin Throw
+
+Winning Streak Length: 4
+06 MAR 2018 | Patiala Federation Cup, Patiala | Patiala (IND) | F | 85.94m | Javelin Throw
+05 MAR 2018 | Patiala Federation Cup, Patiala | Patiala (IND) | Q1 | 79.29m | Javelin Throw
+27 FEB 2018 | Indian Grand Prix 1, Patiala | Patiala (IND) | F | 82.88m | Javelin Throw
+03 FEB 2018 | Offenburg Speerwurfmeeting, Offenburg | Offenburg (GER) | F | 82.80m | Javelin Throw
+
+Winning Streak Length: 3
+02 JUN 2017 | Patiala Federation Cup, Patiala | Patiala (IND) | F | 85.63m | Javelin Throw
+02 JUN 2017 | Patiala Federation Cup, Patiala | Patiala (IND) | Q1 | 78.60m | Javelin Throw
+11 MAY 2017 | Indian Grand Prix 2, New Delhi | New Delhi (IND) | F | 80.49m | Javelin Throw
+
+Winning Streak Length: 2
+23 JUL 2016 | IAAF World U20 Championships, Zdzisław Krzyszkowiak Stadium, Bydgoszcz | Zdzisław Krzyszkowiak Stadium, Bydgoszcz (POL) | F | 86.48m | Javelin Throw
+22 JUL 2016 | IAAF World U20 Championships, Zdzisław Krzyszkowiak Stadium, Bydgoszcz | Zdzisław Krzyszkowiak Stadium, Bydgoszcz (POL) | Q1 | 78.20m | Javelin Throw
+
+Winning Streak Length: 8
+24 APR 2016 | Indian Grand Prix 1, New Delhi | New Delhi (IND) | F | 79.54m | Javelin Throw
+10 FEB 2016 | Guwahati South Asian Games, Guwahati | Guwahati (IND) | F | 82.23m | Javelin Throw
+01 JAN 2016 | Patiala Indian University Championships, Patiala | Patiala (IND) | F | 79.95m | Javelin Throw
+31 DEC 2015 | Patiala Indian University Championships, Patiala | Patiala (IND) | Q1 | 81.04m | Javelin Throw
+17 SEP 2015 | Indian Championships, Kolkata | Kolkata (IND) | F | 77.67m | Javelin Throw
+16 SEP 2015 | Indian Championships, Kolkata | Kolkata (IND) | Q1 | 74.69m | Javelin Throw
+07 AUG 2015 | Hyderabad Fed Cup Junior Ch, Hyderabad | Hyderabad (IND) | F | 76.91m | Javelin Throw
+11 JUL 2015 | Chennai Inter State Championships, Chennai | Chennai (IND) | F | 77.33m | Javelin Throw
+
+Winning Streak Length: 2
+30 NOV 2014 | Vijayawada Indian U18 Championships, Vijayawada | Vijayawada (IND) | F | 76.50m | Javelin Throw (700g)
+18 OCT 2014 | Lucknow North Zone Junior Championships, Lucknow | Lucknow (IND) | F | 74.76m | Javelin Throw (700g)
+
+Winning Streak Length: 2
+22 APR 2014 | Bambolim Indian U18 Championships, Bambolim | Bambolim (IND) | F | 67.00m | Javelin Throw (700g)
+26 JUL 2013 | Thiruvanathapuram Youth Championships, Thiruvanthapuram | Thiruvanthapuram (IND) | F | 69.66m | Javelin Throw
+=================================================================================================================================
+Use Selenium when:
+=================================================================================================================================
+--JavaScript is heavily involved
+--If page loads data only after JS runs.
+
+Example:
+--Content appears after 3 seconds
+--Data loads after scroll
+--Data loads after clicking button
+
+---requests CANNOT execute JavaScript. Selenium can do all like- 
+Login Required
+If website requires:
+OTP
+CAPTCHA (some cases)
+Login session
+Cookies
+
+Selenium can simulate real user login.
+
+---Infinite Scroll
+
+Instagram
+LinkedIn
+Twitter
+
+Data loads when scrolling.
+Only Selenium can scroll like a real user.
+
+---Click to Load More
+
+If page needs:
+Button click
+Dropdown selection
+Filter selection
+Hover action
+Selenium handles this.
+
+Simple Rule
+
+If you can see data in:
+Network → XHR → JSON response
+Then use requests.
+
+If data appears only visually and no direct API found,
+Use Selenium.
+
+---- How Selenium Works
+
+Selenium:
+
+Opens real browser (Chrome, Edge, Firefox)
+Executes JavaScript
+Acts like human
+Finds elements
+Clicks
+Types
+Scrolls
+Extracts HTML
+
+
+It uses:
+WebDriver
+

@@ -1,55 +1,40 @@
 import requests
-import json
-
 url = "https://graphql-prod-4843.edge.aws.worldathletics.org/graphql"
-
 headers = {
     "Content-Type": "application/json",
-    "User-Agent": "Mozilla/5.0",
-    "Origin": "https://worldathletics.org",
-    "Referer": "https://worldathletics.org/",
     "x-api-key": "da2-kh7djqqqkjczfgysuw3b7hczoq"
 }
-
-query = """
-query GetStreak($id: String!) {
-  getSingleCompetitorWinningStreak(
-    competitorId: $id
-  ) {
-    streaks {
-      length
-      results {
-        date
-        result
-        venue
-      }
+payload = {
+    "operationName": "GetSingleCompetitorWinningStreak",
+    "query": """
+        query GetSingleCompetitorWinningStreak($id: Int, $winningStreaksDisciplineOption: String, $winningStreaksFinalOnly: Boolean) {
+            getSingleCompetitorWinningStreak(
+                id: $id,
+                winningStreaksDisciplineOption: $winningStreaksDisciplineOption,
+                winningStreaksFinalOnly: $winningStreaksFinalOnly
+            ) {
+                streaks {
+                    length
+                    results {
+                        date
+                        competition
+                        venue
+                        race
+                        result
+                        discipline
+                    }
+                }
+            }
+        }
+    """,
+    "variables": {
+        "id": 14549089,
+        "winningStreaksDisciplineOption": "all",
+        "winningStreaksFinalOnly": False
     }
-  }
 }
-"""
-
-variables = {
-    "id": "14201847"
-}
-
-response = requests.post(
-    url,
-    headers=headers,
-    json={
-        "query": query,
-        "variables": variables
-    }
-)
-
-print(response.status_code)
-
-if response.status_code == 200:
-    data = response.json()
-
-    streaks = data["data"]["getSingleCompetitorWinningStreak"]["streaks"]
-    for streak in streaks:
-        for result in streak["results"]:
-            if "Diamond League Meeting" in result["competition"]:
-                print("Diamond League Date:", result["date"])
-else:
-    print(response.text)
+data = requests.post(url, headers=headers, json=payload).json()
+for streak in data["data"]["getSingleCompetitorWinningStreak"]["streaks"]:
+    print(f"\nWinning Streak Length: {streak['length']}")
+    for r in streak["results"]:
+        print(f"{r['date']} | {r['competition']} | {r['venue']} | {r['race']} | {r['result']}m | {r['discipline']}")
